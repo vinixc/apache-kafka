@@ -2,6 +2,7 @@ package br.com.vini.ecommerce;
 
 import java.time.Duration;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -43,6 +44,8 @@ public class LogService {
 		properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, LogService.class.getName());
+		properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, LogService.class.getName() + UUID.randomUUID().toString());
+
 		
 		return properties;
 	}

@@ -1,6 +1,7 @@
 package br.com.vini.ecommerce;
 
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.Callback;
@@ -13,23 +14,28 @@ public class NewOrderMain {
 	
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		var producer = new KafkaProducer<String,String>(properties());
-		var value = "123,567,323";
-		var email = "Thank you for your order";
 		
-		var record = new ProducerRecord<>("ECOMMERCE_NEW_ORDER", value, value);
-		var emailRecord = new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", email, email);
-		
-		Callback callback = (data,ex) ->{
-			if(ex != null) {
-				ex.printStackTrace();
-				return;
-			}
-			System.out.println("sucesso enviando " + data.topic() + ":::partition " + data.partition() + "/ offset " + data.offset());
-		};
-		
-		producer.send(record , callback).get();
-		
-		producer.send(emailRecord,callback).get();
+		for(int i = 0 ; i < 100; i++) {
+			
+			var key = UUID.randomUUID().toString();
+			var value = key + "123,567,323";
+			var email = key + "Thank you for your order";
+			
+			var record = new ProducerRecord<>("ECOMMERCE_NEW_ORDER", value, value);
+			var emailRecord = new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", email, email);
+			
+			Callback callback = (data,ex) ->{
+				if(ex != null) {
+					ex.printStackTrace();
+					return;
+				}
+				System.out.println("sucesso enviando " + data.topic() + ":::partition " + data.partition() + "/ offset " + data.offset());
+			};
+			
+			producer.send(record , callback).get();
+			
+			producer.send(emailRecord,callback).get();
+		}
 	}
 
 	private static Properties properties() {
