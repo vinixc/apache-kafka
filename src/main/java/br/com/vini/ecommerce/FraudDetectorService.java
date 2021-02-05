@@ -15,13 +15,12 @@ public class FraudDetectorService {
 	}
 	
 	public void parse(ConsumerRecord<String, String> record) {
-		System.out.println("----------------------------------------------");
-		System.out.println("processando new order, checking for fraud");
-		System.out.println(record.key());
-		System.out.println(record.value());
-		System.out.println(record.partition());
-		System.out.println(record.offset());
-		System.out.println("----------------------------------------------");
+		System.out.println("-------START FRAUD SERVICE CONSUMER----------");
+		System.out.println("-------KEY: " + record.key() + "-------------");
+		System.out.println("-------VALUE: " +record.value() + "----------");
+		System.out.println("-------PARTITION: " +record.partition()+ "---");
+		System.out.println("-------OFFSET: " + record.offset() + "-------");
+		System.out.println("-------FIM FRAUD SERVICE CONSUMER -----------");
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
