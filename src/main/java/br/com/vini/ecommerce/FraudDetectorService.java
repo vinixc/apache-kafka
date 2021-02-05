@@ -8,8 +8,11 @@ public class FraudDetectorService {
 		
 		FraudDetectorService fraudService = new FraudDetectorService();
 		
-		try(var service = new KafkaService(
-				fraudService.getClass().getSimpleName(),"ECOMMERCE_NEW_ORDER", fraudService::parse)){
+		try(var service = new KafkaService<Order>(
+				fraudService.getClass().getSimpleName(),
+				"ECOMMERCE_NEW_ORDER",
+				fraudService::parse,
+				Order.class)){
 
 			service.run();
 		}catch(Exception e) {
@@ -18,7 +21,7 @@ public class FraudDetectorService {
 		;
 	}
 	
-	public void parse(ConsumerRecord<String, String> record) {
+	public void parse(ConsumerRecord<String, Order> record) {
 		System.out.println("-------START FRAUD SERVICE CONSUMER----------");
 		System.out.println("-------KEY: " + record.key() + "-------------");
 		System.out.println("-------VALUE: " +record.value() + "----------");

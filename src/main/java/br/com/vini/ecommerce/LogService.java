@@ -9,7 +9,11 @@ public class LogService {
 	public static void main(String[] args) {
 
 		LogService logService = new LogService();
-		try (var service = new KafkaService(logService.getClass().getSimpleName(), Pattern.compile("ECOMMERCE.*"), logService::parse)) {
+		try (var service = new KafkaService<String>(
+				logService.getClass().getSimpleName(),
+				Pattern.compile("ECOMMERCE.*"),
+				logService::parse,
+				String.class)) {
 			
 			service.run();
 		} catch (Exception e) {

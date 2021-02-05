@@ -7,14 +7,18 @@ public class EmailService {
 	public static void main(String[] args) {
 		var emailService = new EmailService();
 		
-		try(var service = new KafkaService(emailService.getClass().getSimpleName(),"ECOMMERCE_SEND_EMAIL", emailService::parse)){
+		try(var service = new KafkaService<Email>(
+				emailService.getClass().getSimpleName(),
+				"ECOMMERCE_SEND_EMAIL",
+				emailService::parse,
+				Email.class)){
 			service.run();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void parse(ConsumerRecord<String,String> record) {
+	private void parse(ConsumerRecord<String,Email> record) {
 		System.out.println("-------START EMAIL SERVICE CONSUMER----------");
 		System.out.println("-------KEY: " + record.key() + "-------------");
 		System.out.println("-------VALUE: " +record.value() + "----------");
