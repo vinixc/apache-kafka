@@ -11,18 +11,15 @@
 
     <artifactId>service-fraud-detector</artifactId>
     <dependencies>
+
         <dependency>
             <groupId>br.com.vini</groupId>
-            <artifactId>demo-kafka</artifactId>
+            <artifactId>common-kafka</artifactId>
             <version>1.0.0</version>
-            <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>br.com.vini</groupId>
-            <artifactId>commun-kafka</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
+
+
+
     </dependencies>
 
     <properties>
