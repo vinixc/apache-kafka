@@ -4,8 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.vini</groupId>
 	<artifactId>demo-kafka</artifactId>
-	<version>1.0.0</version>
-	<name>demo-kafka</name>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <modules>
+        <module>service-email</module>
+		<module>service-fraud-detector</module>
+		<module>service-log</module>
+		<module>service-new-order</module>
+		<module>common-kafka</module>
+	</modules>
+    <name>demo-kafka</name>
 	<description>Projeto para o estudo de mensageria com kafka</description>
 
 	<build>
