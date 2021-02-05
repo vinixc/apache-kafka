@@ -1,53 +1,28 @@
 package br.com.vini.ecommerce;
 
-import java.time.Duration;
-import java.util.Properties;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class LogService {
-	
+
 	public static void main(String[] args) {
-		
-		var consumer = new KafkaConsumer<String, String>(properties());
-		
-		consumer.subscribe(Pattern.compile("ECOMMERCE.*"));
-		
-		while(true) {
+
+		LogService logService = new LogService();
+		try (var service = new KafkaService(logService.getClass().getSimpleName(), Pattern.compile("ECOMMERCE.*"), logService::parse)) {
 			
-			var records = consumer.poll(Duration.ofMillis(100));
-			
-			if(records.isEmpty()) {
-				continue;
-			}
-			
-			for(var record : records) {
-				System.out.println("----------------------------------------------");
-				System.out.println("LOG");
-				System.out.println(record.key());
-				System.out.println(record.value());
-				System.out.println(record.partition());
-				System.out.println(record.offset());
-				System.out.println("----------------------------------------------");
-			}
+			service.run();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	private static Properties properties() {
-		var properties = new Properties();
-		
-		properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
-		properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, LogService.class.getName());
-		properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, LogService.class.getName() + UUID.randomUUID().toString());
-
-		
-		return properties;
+	public void parse(ConsumerRecord<String, String> record) {
+		System.out.println("-------START LOG SERVICE CONSUMER----------");
+		System.out.println("-------KEY: " + record.key() + "-------------");
+		System.out.println("-------VALUE: " + record.value() + "----------");
+		System.out.println("-------PARTITION: " + record.partition() + "---");
+		System.out.println("-------OFFSET: " + record.offset() + "-------");
+		System.out.println("-------FIM LOG SERVICE CONSUMER -----------");
 	}
-
 }
