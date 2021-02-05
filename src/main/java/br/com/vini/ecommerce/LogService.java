@@ -1,8 +1,11 @@
 package br.com.vini.ecommerce;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class LogService {
 
@@ -13,7 +16,8 @@ public class LogService {
 				logService.getClass().getSimpleName(),
 				Pattern.compile("ECOMMERCE.*"),
 				logService::parse,
-				String.class)) {
+				String.class,
+				Map.of(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName()))) {
 			
 			service.run();
 		} catch (Exception e) {

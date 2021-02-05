@@ -1,5 +1,7 @@
 package br.com.vini.ecommerce;
 
+import java.util.HashMap;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class EmailService {
@@ -11,7 +13,8 @@ public class EmailService {
 				emailService.getClass().getSimpleName(),
 				"ECOMMERCE_SEND_EMAIL",
 				emailService::parse,
-				Email.class)){
+				Email.class,
+				new HashMap<>())){
 			service.run();
 		}catch(Exception e) {
 			e.printStackTrace();

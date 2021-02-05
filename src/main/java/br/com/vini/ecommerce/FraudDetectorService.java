@@ -1,5 +1,7 @@
 package br.com.vini.ecommerce;
 
+import java.util.HashMap;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class FraudDetectorService {
@@ -12,7 +14,8 @@ public class FraudDetectorService {
 				fraudService.getClass().getSimpleName(),
 				"ECOMMERCE_NEW_ORDER",
 				fraudService::parse,
-				Order.class)){
+				Order.class,
+				new HashMap<>())){
 
 			service.run();
 		}catch(Exception e) {
